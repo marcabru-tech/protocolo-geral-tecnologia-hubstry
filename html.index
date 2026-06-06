@@ -1,0 +1,1511 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Protocolo Hubstry de Tecnologia Geral — v.04.1</title>
+  <meta name="description" content="Framework operacional de tecnologia geral: Segurança, Dados, IA, Governança. Quântico · Analógico-Físico · Digital. Hubstry Deep Tech." />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;700&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0B1120;
+      --surface: #111827;
+      --surface-raised: #1E293B;
+      --border: rgba(255,255,255,0.06);
+      --text: #F1F5F9;
+      --text-secondary: #94A3B8;
+      --muted: #475569;
+      --quantum: #10B981;
+      --analog: #F59E0B;
+      --digital: #3B82F6;
+      --hubstry-gold: #D4A853;
+      --danger: #EF4444;
+      --font-display: 'IBM Plex Mono', monospace;
+      --font-body: 'IBM Plex Sans', sans-serif;
+      --font-code: 'IBM Plex Mono', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      font-weight: 400;
+      font-size: 15px;
+      line-height: 1.8;
+      color: var(--text);
+      background: var(--bg);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 59px,
+          rgba(255,255,255,0.015) 59px,
+          rgba(255,255,255,0.015) 60px
+        );
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    a { color: var(--hubstry-gold); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    ::selection { background: rgba(212,168,83,0.3); color: var(--text); }
+
+    .page {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    section {
+      padding: 80px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    section:last-of-type { border-bottom: none; }
+
+    h1, h2, h3, h4 {
+      font-family: var(--font-display);
+      font-weight: 700;
+      line-height: 1.3;
+      color: var(--text);
+    }
+
+    h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 700; letter-spacing: -0.02em; }
+    h2 { font-size: 1.4rem; margin-bottom: 8px; letter-spacing: -0.01em; }
+    h3 { font-size: 1.05rem; font-weight: 500; margin-bottom: 8px; color: var(--text-secondary); }
+    h4 { font-size: 0.9rem; font-weight: 500; margin-bottom: 6px; color: var(--muted); font-family: var(--font-body); text-transform: uppercase; letter-spacing: 0.1em; }
+
+    p { margin-bottom: 16px; }
+    p:last-child { margin-bottom: 0; }
+    strong { font-weight: 600; color: var(--text); }
+
+    blockquote {
+      border-left: 3px solid var(--hubstry-gold);
+      padding: 16px 0 16px 24px;
+      margin: 32px 0;
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: var(--text-secondary);
+    }
+
+    ul, ol { padding-left: 20px; margin-bottom: 16px; }
+    li { margin-bottom: 6px; }
+    li::marker { color: var(--muted); }
+
+    code, .code {
+      font-family: var(--font-code);
+      font-size: 13px;
+      font-weight: 400;
+      background: rgba(255,255,255,0.04);
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+
+    /* ======================== NAV ======================== */
+    .nav-fixed {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: rgba(11,17,32,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .nav-brand {
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--hubstry-gold);
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 16px;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      flex-wrap: wrap;
+    }
+    .nav-links a { color: var(--muted); transition: color 0.3s; }
+    .nav-links a:hover { color: var(--text); text-decoration: none; }
+
+    /* ======================== HERO ======================== */
+    .hero {
+      padding: 160px 0 100px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+
+    .hero-pilares {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+
+    .pilar-block {
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 18px;
+      border: 2px solid;
+    }
+    .pilar-block--q { color: var(--quantum); border-color: var(--quantum); }
+    .pilar-block--a { color: var(--analog); border-color: var(--analog); }
+    .pilar-block--d { color: var(--digital); border-color: var(--digital); }
+
+    .hero-sub {
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+
+    .hero h1 { margin-bottom: 16px; }
+
+    .hero-tagline {
+      font-family: var(--font-display);
+      font-size: 12px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 40px;
+    }
+
+    .hero-line {
+      width: 80px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--hubstry-gold), transparent);
+      margin: 0 auto 32px;
+    }
+
+    .hero-meta {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 24px;
+      line-height: 2;
+    }
+    .hero-meta code { color: var(--text-secondary); }
+
+    .hero-cta {
+      display: inline-block;
+      margin-top: 24px;
+      padding: 14px 40px;
+      border: 1px solid var(--hubstry-gold);
+      color: var(--hubstry-gold);
+      font-family: var(--font-display);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      transition: background 0.3s, color 0.3s, letter-spacing 0.4s;
+    }
+    .hero-cta:hover {
+      background: var(--hubstry-gold);
+      color: var(--bg);
+      letter-spacing: 0.25em;
+      text-decoration: none;
+    }
+
+    /* ======================== SECTION HEADERS ======================== */
+    .section-num {
+      font-family: var(--font-display);
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--surface-raised);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .section-bar {
+      width: 100%;
+      height: 1px;
+      background: var(--border);
+      margin: 16px 0 32px;
+    }
+
+    .section-bar--quantum { background: var(--quantum); opacity: 0.3; }
+    .section-bar--analog { background: var(--analog); opacity: 0.3; }
+    .section-bar--digital { background: var(--digital); opacity: 0.3; }
+    .section-bar--gold { background: var(--hubstry-gold); opacity: 0.3; }
+
+    /* ======================== CARDS ======================== */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      margin: 24px 0;
+    }
+
+    .card-grid--2 { grid-template-columns: repeat(2, 1fr); }
+    .card-grid--1 { grid-template-columns: 1fr; }
+
+    .card {
+      background: var(--surface);
+      padding: 24px;
+      transition: background 0.3s;
+    }
+    .card:hover { background: var(--surface-raised); }
+
+    .card h3 {
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+
+    .card p, .card li {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    .card--quantum { border-left: 3px solid var(--quantum); }
+    .card--analog { border-left: 3px solid var(--analog); }
+    .card--digital { border-left: 3px solid var(--digital); }
+    .card--gold { border-left: 3px solid var(--hubstry-gold); }
+
+    /* ======================== TABLES ======================== */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 24px 0;
+      font-size: 13px;
+    }
+
+    th {
+      text-align: left;
+      padding: 12px 16px;
+      font-family: var(--font-display);
+      font-weight: 500;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-secondary);
+      vertical-align: top;
+      line-height: 1.6;
+    }
+
+    tr:hover td { background: rgba(255,255,255,0.02); }
+
+    /* ======================== PIPELINE ======================== */
+    .pipeline {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin: 24px 0;
+    }
+
+    .pipeline-stage {
+      flex: 1;
+      min-width: 120px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 16px;
+      text-align: center;
+      font-family: var(--font-display);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      position: relative;
+    }
+
+    .pipeline-stage::after {
+      content: '→';
+      position: absolute;
+      right: -12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      font-size: 14px;
+      z-index: 1;
+    }
+    .pipeline-stage:last-child::after { content: none; }
+
+    /* ======================== LAYER BARS ======================== */
+    .layer-stack {
+      margin: 24px 0;
+    }
+
+    .layer-bar {
+      padding: 14px 20px;
+      margin-bottom: 2px;
+      background: var(--surface);
+      border-left: 3px solid var(--muted);
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      transition: background 0.3s;
+    }
+    .layer-bar:hover { background: var(--surface-raised); }
+
+    .layer-bar .num {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--muted);
+      min-width: 24px;
+    }
+
+    .layer-bar .label { color: var(--text-secondary); }
+    .layer-bar .label strong { color: var(--text); }
+
+    .layer-bar--1 { border-color: var(--danger); }
+    .layer-bar--2 { border-color: #F97316; }
+    .layer-bar--3 { border-color: var(--analog); }
+    .layer-bar--4 { border-color: var(--quantum); }
+    .layer-bar--5 { border-color: #06B6D4; }
+    .layer-bar--6 { border-color: var(--digital); }
+    .layer-bar--7 { border-color: #8B5CF6; }
+
+    /* ======================== DETAILS / SUMMARY ======================== */
+    details {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      margin: 8px 0;
+    }
+
+    summary {
+      padding: 16px 20px;
+      cursor: pointer;
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    summary::-webkit-details-marker { display: none; }
+    summary::before {
+      content: '▸';
+      color: var(--muted);
+      transition: transform 0.2s;
+    }
+    details[open] summary::before { transform: rotate(90deg); }
+
+    details .detail-body {
+      padding: 0 20px 20px 32px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.8;
+    }
+
+    details .detail-body ul { padding-left: 16px; }
+    details .detail-body li { margin-bottom: 4px; }
+
+    /* ======================== PILAR TAB ======================== */
+    .pilar-indicator {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      margin-right: 8px;
+    }
+    .pilar-indicator--q { background: var(--quantum); }
+    .pilar-indicator--a { background: var(--analog); }
+    .pilar-indicator--d { background: var(--digital); }
+
+    /* ======================== FOOTER ======================== */
+    .site-footer {
+      padding: 60px 0;
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+      border-top: 1px solid var(--border);
+    }
+    .site-footer a { color: var(--muted); }
+    .site-footer a:hover { color: var(--hubstry-gold); }
+    .footer-brand {
+      font-family: var(--font-display);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--hubstry-gold);
+      margin-bottom: 16px;
+    }
+
+    /* ======================== SCROLL REVEAL ======================== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+    }
+
+    /* ======================== RESPONSIVE ======================== */
+    @media (max-width: 700px) {
+      .card-grid, .card-grid--2 { grid-template-columns: 1fr; }
+      .hero { padding: 120px 0 70px; }
+      section { padding: 56px 0; }
+      .nav-links { display: none; }
+      .pipeline { flex-direction: column; }
+      .pipeline-stage::after { content: '↓'; right: auto; left: 50%; bottom: -14px; top: auto; transform: translateX(-50%); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ======================== NAV ======================== -->
+  <nav class="nav-fixed">
+    <div class="nav-inner">
+      <span class="nav-brand">Q·A·D — Protocolo v.04.1</span>
+      <div class="nav-links">
+        <a href="#resumo">Resumo</a>
+        <a href="#seguranca">Segurança</a>
+        <a href="#dados">Dados</a>
+        <a href="#pilares">Pilares</a>
+        <a href="#camadas">7 Camadas</a>
+        <a href="#checklists">Ação</a>
+        <a href="#lexiograph">Lexiograph</a>
+        <a href="#referencias">Ref.</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="page">
+
+    <!-- ======================== HERO ======================== -->
+    <section class="hero">
+      <div class="hero-pilares" aria-hidden="true">
+        <div class="pilar-block pilar-block--q">Q</div>
+        <div class="pilar-block pilar-block--a">A</div>
+        <div class="pilar-block pilar-block--d">D</div>
+      </div>
+      <div class="hero-sub">Hubstry Deep Tech</div>
+      <h1>Protocolo de<br>Tecnologia Geral</h1>
+      <div class="hero-tagline">Segurança · Dados · IA · Governança</div>
+      <div class="hero-line" aria-hidden="true"></div>
+      <p style="max-width: 560px; margin: 0 auto; color: var(--text-secondary);">
+        Framework operacional que conecta regulação a implementação técnica.
+        Quântico · Analógico-Físico · Digital.
+        A norma jurídica e a técnica na mesma arquitetura.
+      </p>
+      <div class="hero-meta">
+        <code>v.04.1</code> · <code>CC BY 4.0</code> · <code>Janeiro 2026</code><br>
+        Revisado em <strong>AI Safety Meetup Brazil #6</strong> (ABRIA, 23/05/2026)<br>
+        DOI: <code>10.5281/zenodo.XXXXXXX</code>
+      </div>
+      <a href="#resumo" class="hero-cta">Ler o Protocolo</a>
+    </section>
+
+    <!-- ======================== RESUMO EXECUTIVO ======================== -->
+    <section id="resumo" class="reveal">
+      <div class="section-num">00</div>
+      <h2>Resumo Executivo</h2>
+      <div class="section-bar section-bar--gold"></div>
+
+      <p>
+        Este documento é um framework operacional de Tecnologia Geral —
+        <strong>não</strong> um checklist, <strong>não</strong> um manual de segurança,
+        <strong>não</strong> um whitepaper de IA. É um documento vivo e versionado
+        (v.04.1) de conformidade regulatória e técnica.
+      </p>
+
+      <div class="card-grid">
+        <div class="card card--gold">
+          <h3>O que é</h3>
+          <p>Framework que articula segurança por design, camada de dados e três pilares (Quântico, Analógico-Físico, Digital) com 7 Camadas operacionais e protocolo de governança.</p>
+        </div>
+        <div class="card card--gold">
+          <h3>Por que importa</h3>
+          <p>IA é uma armazão jurídica. Este protocolo resolve a parte técnica que o Marco Legal da IA (PL 2.338) e as demais normas não resolvem.</p>
+        </div>
+        <div class="card card--gold">
+          <h3>Escopo</h3>
+          <p>7 pilares · 7 camadas · 13 módulos de checklist · 2 modos de aplicação (criação e auditoria). Aplicável a qualquer organização que opera com IA.</p>
+        </div>
+      </div>
+
+      <h4>Densidade Normativa</h4>
+      <p>
+        A aplicação das normas técnicas e jurídicas a sistemas de IA não é trivial —
+        envolve conflitos de competência, antinomias e compatibilização de regimes setoriais.
+        Este protocolo tem densidade normativa que demanda aplicação cuidadosa e compreensão contextualizada.
+        A natureza multidimensional — camada de dados, três pilares, sete camadas e regimes regulatórios —
+        exige que a conformidade seja conduzida por equipe especializada.
+      </p>
+
+      <h4>Diferenciais</h4>
+      <ul>
+        <li><strong>Não é checklist</strong> — é framework articulado com múltiplas camadas e pilares inter-relacionados</li>
+        <li><strong>Dados como camada de valor</strong> (não pilar) — atravessa todos os domínios</li>
+        <li><strong>Segurança como envelope transversal</strong> (não domínio isolado)</li>
+        <li><strong>Soberania como dimensão regulatória</strong> — hardware, orbital e supply chain</li>
+        <li><strong>Sustentabilidade ambiental</strong> como dimensão regulatória</li>
+        <li><strong>Nuance, contexto e adaptação</strong> — não replicação cega</li>
+      </ul>
+
+      <blockquote>
+        "Segurança não é um domínio entre iguais — é o envelope que governa todos os outros.
+        Dados não é um pilar — é a camada de valor que atravessa todos os domínios."
+      </blockquote>
+    </section>
+
+    <!-- ======================== SEGURANÇA POR DESIGN ======================== -->
+    <section id="seguranca" class="reveal">
+      <div class="section-num">01</div>
+      <h2>Segurança por Design</h2>
+      <h3>A Camada que Não é Pilar</h3>
+      <div class="section-bar section-bar--gold"></div>
+
+      <p>
+        Segurança por Design é a camada de governança transversal —
+        não compete com os pilares, mas os envolve.
+        Segurança é o envelope que governa a proteção de dados,
+        a infraestrutura, os modelos de IA e os agentes.
+        A dimensão regulatória reforça: sustentabilidade ambiental
+        como obrigação transversal de compliance.
+      </p>
+
+      <h4>Protocolo de 7 Camadas para Agentes de IA</h4>
+      <p>
+        Agentes autônomos em produção requerem governança operacional estruturada.
+        Proposta de protocolo de 7 camadas:
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Camada</th>
+            <th>Princípio</th>
+            <th>Implementação</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>1</code></td>
+            <td><strong>Autonomia limitada por padrão</strong></td>
+            <td>Privilégio mínimo. Autonomia restrita a escopo documentado.</td>
+          </tr>
+          <tr>
+            <td><code>2</code></td>
+            <td><strong>Identidade registrada e audível</strong></td>
+            <td>Cada agente com ID único, owner, purpose e expiry.</td>
+          </tr>
+          <tr>
+            <td><code>3</code></td>
+            <td><strong>Validação humana para ações de impacto</strong></td>
+            <td>Ações financeiras, jurídicas ou reputacionais exigem confirmação humana.</td>
+          </tr>
+          <tr>
+            <td><code>4</code></td>
+            <td><strong>Trilha de auditoria imutável</strong></td>
+            <td>Todas as ações, decisões e interações logadas e criptografadas.</td>
+          </tr>
+          <tr>
+            <td><code>5</code></td>
+            <td><strong>Granularidade de permissão por contexto</strong></td>
+            <td>Permissões variam por ambiente, tempo e sensibilidade da ação.</td>
+          </tr>
+          <tr>
+            <td><code>6</code></td>
+            <td><strong>Kill switch operacional</strong></td>
+            <td>Desativação imediata por qualquer membro autorizado.</td>
+          </tr>
+          <tr>
+            <td><code>7</code></td>
+            <td><strong>Revisão periódica obrigatória</strong></td>
+            <td>Auditoria trimestral de autonomia, impacto e conformidade.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4>Diretrizes Internas de Segurança</h4>
+      <div class="card-grid card-grid--2">
+        <div class="card card--gold">
+          <h3>Diretrizes de Segurança</h3>
+          <p>Camada de governança. Nível de maturidade. Nível de detalhamento. Aplicável a todos os pilares.</p>
+        </div>
+        <div class="card card--gold">
+          <h3>Sustentabilidade Ambiental</h3>
+          <p>Impacto ambiental de data centers. Eficiência energética. PEG + rastro tecnológico. Compensação de carbono.</p>
+        </div>
+        <div class="card card--gold">
+          <h3>Diretrizes Éticas</h3>
+          <p>Cláusula ética de não-licenciamento. Uso em conformidade com direitos humanos. Proibição de vigilância em massa.</p>
+        </div>
+        <div class="card card--gold">
+          <h3>Propriedade Intelectual</h3>
+          <p>Dupla camada de proteção: PI aberta + PI registrada. CC BY 4.0 para publicações. Marcas registradas (Lexiograph®, Hub CaaS®, GuruDev®).</p>
+        </div>
+      </div>
+
+      <blockquote>
+        "Autonomia técnica sem soberania é dependência estrutural."
+      </blockquote>
+    </section>
+
+    <!-- ======================== CAMADA DE DADOS ======================== -->
+    <section id="dados" class="reveal">
+      <div class="section-num">02</div>
+      <h2>Camada de Dados</h2>
+      <h3>O Tecido Conjuntivo</h3>
+      <div class="section-bar section-bar--gold"></div>
+
+      <p>
+        Dados não é um pilar — é a <strong>camada de valor</strong> que atravessa todos os domínios.
+        Define como os dados são capturados, processados e governados em todo o ecossistema.
+      </p>
+
+      <blockquote>
+        "Dados não é um pilar — é a camada de valor que atravessa todos os domínios."
+      </blockquote>
+
+      <h4>Ciclo de Vida dos Dados</h4>
+      <div class="pipeline">
+        <div class="pipeline-stage">Captura</div>
+        <div class="pipeline-stage">Ingestão</div>
+        <div class="pipeline-stage">Processamento</div>
+        <div class="pipeline-stage">Qualidade</div>
+        <div class="pipeline-stage">Segurança</div>
+        <div class="pipeline-stage">Distribuição</div>
+        <div class="pipeline-stage">Descarte</div>
+      </div>
+      <p style="font-size: 13px; color: var(--muted);">
+        Os 7 estágios são interdependentes: falha em qualquer etapa contamina todas as subsequentes.
+      </p>
+
+      <h4>Pirâmide DIKW — Aplicada a Dados</h4>
+      <div class="card-grid card-grid--1">
+        <div class="card">
+          <table>
+            <tbody>
+              <tr>
+                <td><strong style="color: var(--hubstry-gold);">Sabedoria</strong></td>
+                <td><strong>WI</strong> — O que é justo? Conhecimento contextualizado aplicado a decisões de longo prazo.</td>
+              </tr>
+              <tr>
+                <td><strong style="color: var(--digital);">Conhecimento</strong></td>
+                <td><strong>WS</strong> — O que é certo? Conhecimento testado e validado em contextos específicos.</td>
+              </tr>
+              <tr>
+                <td><strong style="color: var(--quantum);">Informação</strong></td>
+                <td><strong>WI</strong> — O que funciona? Dados contextualizados que geram insights acionáveis.</td>
+              </tr>
+              <tr>
+                <td><strong style="color: var(--analog);">Dados</strong></td>
+                <td><strong>WI</strong> — O que existe? Fatos brutos — a matéria-prima de todo o ciclo.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <h4>Princípios Fundamentais</h4>
+      <div class="card-grid card-grid--2">
+        <div class="card card--gold">
+          <h3>Princípios FAIR</h3>
+          <ul>
+            <li><strong>F</strong>indable — metadados rastreáveis</li>
+            <li><strong>A</strong>ccessible — protocolos padronizados</li>
+            <li><strong>I</strong>nteroperável — vocabulários comuns</li>
+            <li><strong>R</strong>eusable — licenças claras</li>
+          </ul>
+        </div>
+        <div class="card card--gold">
+          <h3>LGPD / GDPR</h3>
+          <ul>
+            <li>Minimização de dados</li>
+            <li>Consentimento granular</li>
+            <li>Direito ao esquecimento</li>
+            <li>Transferência internacional</li>
+            <li>Registro de operações</li>
+          </ul>
+        </div>
+      </div>
+
+      <h4>Tecnologias de Privacidade</h4>
+      <table>
+        <thead>
+          <tr>
+            <th>Tecnologia</th>
+            <th>Aplicação</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Differential Privacy</strong></td>
+            <td>Proteção estatística em datasets compartilhados</td>
+          </tr>
+          <tr>
+            <td><strong>Homomorphic Encryption</strong></td>
+            <td>Computação sobre dados criptografados</td>
+          </tr>
+          <tr>
+            <td><strong>Federated Learning</strong></td>
+            <td>Treinamento distribuído sem centralização de dados</td>
+          </tr>
+          <tr>
+            <td><strong>Secure Enclaves</strong></td>
+            <td>Execução isolada em hardware confiável</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <!-- ======================== OS TRÊS PILARES ======================== -->
+    <section id="pilares" class="reveal">
+      <div class="section-num">03–05</div>
+      <h2>Os Três Pilares</h2>
+      <h3>Quântico · Analógico-Físico · Digital</h3>
+      <div class="section-bar section-bar--gold"></div>
+
+      <div class="card-grid">
+        <div class="card card--quantum">
+          <h3><span class="pilar-indicator pilar-indicator--q"></span>Pilar Quântico</h3>
+          <p>Criptografia pós-quântica. NIST FIPS 203/204/205. AES-256. TLS 1.3. Roadmap PQC. Estratégia de Adoção Quântica (EAQ).</p>
+        </div>
+        <div class="card card--analog">
+          <h3><span class="pilar-indicator pilar-indicator--a"></span>Pilar Analógico-Físico</h3>
+          <p>Semicondutores. Soberania orbital. Supply chain como superfície de ataque. Infraestrutura tangível.</p>
+        </div>
+        <div class="card card--digital">
+          <h3><span class="pilar-indicator pilar-indicator--d"></span>Pilar Digital</h3>
+          <p>OWASP Agentic Top 10. Privacy by Design. Agentes multi-agente (MAS). ZKPs. Segurança de modelos de IA.</p>
+        </div>
+      </div>
+
+      <!-- PILAR QUÂNTICO -->
+      <h4 id="quantum" style="margin-top: 48px;">
+        <span class="pilar-indicator pilar-indicator--q"></span>03 — Pilar Quântico
+      </h4>
+      <div class="section-bar section-bar--quantum"></div>
+
+      <p>
+        A computação quântica ameaça a infraestrutura criptográfica atual.
+        O Pilar Quântico define a estratégia de transição para criptografia pós-quântica (PQC)
+        conforme os padrões NIST publicados em agosto de 2024.
+      </p>
+
+      <h4>Padrões NIST — FIPS 203/204/205</h4>
+      <table>
+        <thead>
+          <tr>
+            <th>Padrão</th>
+            <th>Algoritmo</th>
+            <th>Tipo</th>
+            <th>Variantes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong style="color: var(--quantum);">FIPS 203</strong></td>
+            <td>ML-KEM</td>
+            <td>Encapsulamento de chaves</td>
+            <td>ML-KEM-512, ML-KEM-768, ML-KEM-1024</td>
+          </tr>
+          <tr>
+            <td><strong style="color: var(--quantum);">FIPS 204</strong></td>
+            <td>ML-DSA</td>
+            <td>Assinatura digital</td>
+            <td>ML-DSA-44, ML-DSA-65, ML-DSA-87</td>
+          </tr>
+          <tr>
+            <td><strong style="color: var(--quantum);">FIPS 205</strong></td>
+            <td>SLH-DSA</td>
+            <td>Assinatura digital (hash-based)</td>
+            <td>SLH-DSA-SHA2-128s, SLH-DSA-SHAKE-128f, etc.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4>Padrões Atuais (pré-quânticos)</h4>
+      <div class="card-grid card-grid--2">
+        <div class="card card--quantum">
+          <h3>AES-256</h3>
+          <p>Criptografia simétrica. 256 bits de segurança. Nível quântico equivalente: 128 bits (Grover). Adequado para dados em repouso.</p>
+        </div>
+        <div class="card card--quantum">
+          <h3>TLS 1.3</h3>
+          <p>Protocolo de transporte. Obrigatório para toda comunicação. Sem fallback para TLS 1.2.</p>
+        </div>
+      </div>
+
+      <h4>Roadmap PQC</h4>
+      <div class="card-grid card-grid--1">
+        <div class="card card--quantum">
+          <table>
+            <tbody>
+              <tr>
+                <td><strong style="color: var(--quantum);">Fase 1 (2024–2025)</strong></td>
+                <td>Inventário criptográfico. Identificação de sistemas RSA/ECC. Avaliação de dependências.</td>
+              </tr>
+              <tr>
+                <td><strong style="color: var(--quantum);">Fase 2 (2025–2026)</strong></td>
+                <td>Migração gradual para ML-KEM e ML-DSA. Testes de interoperabilidade.</td>
+              </tr>
+              <tr>
+                <td><strong style="color: var(--quantum);">Fase 3 (2026–2028)</strong></td>
+                <td>Implementação completa PQC. Validação em produção. Auditoria de conformidade.</td>
+              </tr>
+              <tr>
+                <td><strong style="color: var(--quantum);">Fase 4 (2028+)</strong></td>
+                <td>Descontinuação total de algoritmos pré-quânticos. Monitoramento contínuo.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ESTRATÉGIA DE ADOÇÃO QUÂNTICA -->
+      <h4 id="eaq" style="margin-top: 40px;">Estratégia de Adoção Quântica (EAQ)</h4>
+      <p>
+        A EAQ define o processo sistemático de transição. Foco na fase atual
+        (criptografia pós-quântica), com prazo alinhado à publicação dos padrões NIST.
+      </p>
+      <div class="card-grid card-grid--2">
+        <div class="card card--quantum">
+          <h3>1. Inventário</h3>
+          <p>Identificar todos os sistemas que usam RSA, ECC ou Diffie-Hellman. Mapear dependências e prazos de vida útil.</p>
+        </div>
+        <div class="card card--quantum">
+          <h3>2. Priorização</h3>
+          <p>Classificar por criticidade: dados de longa duração primeiro (harvest-now-decrypt-later). Infraestrutura de chaves por último.</p>
+        </div>
+        <div class="card card--quantum">
+          <h3>3. Migração</h3>
+          <p>Implementar ML-KEM para encapsulamento e ML-DSA para assinaturas. Testes de interoperabilidade em ambiente controlado.</p>
+        </div>
+        <div class="card card--quantum">
+          <h3>4. Validação</h3>
+          <p>Auditoria de conformidade. Monitoramento contínuo de vulnerabilidades. Atualização de trilha de auditoria.</p>
+        </div>
+      </div>
+
+      <!-- PILAR ANALÓGICO-FÍSICO -->
+      <h4 id="analogico" style="margin-top: 48px;">
+        <span class="pilar-indicator pilar-indicator--a"></span>04 — Pilar Analógico-Físico
+      </h4>
+      <div class="section-bar section-bar--analog"></div>
+
+      <p>
+        Infraestrutura tangível: dependência estrutural de semicondutores,
+        soberania orbital e supply chain como superfície de ataque.
+      </p>
+
+      <div class="card-grid">
+        <div class="card card--analog">
+          <h3>Semicondutores</h3>
+          <p>Dependência estrutural. Concentração geográfica (TSMC, Samsung, Intel). Subsídios governamentais (CHIPS Act, EU Chips Act). Impacto direto em soberania digital.</p>
+        </div>
+        <div class="card card--analog">
+          <h3>Soberania Orbital</h3>
+          <p>Infraestrutura espacial como ativo estratégico. Starlink, Kuiper, constelações nacionais. Comunicação satelital como camada de resiliência.</p>
+        </div>
+        <div class="card card--analog">
+          <h3>Supply Chain</h3>
+          <p>Supply chain como superfície de ataque. Verificação de proveniência. Hardware root of trust. Firmware assinado. Auditoria de componentes.</p>
+        </div>
+      </div>
+
+      <blockquote>
+        "Autonomia técnica sem soberania é dependência estrutural.
+        Não se constrói segurança digital sobre hardware que não se compreende,
+        não se verifica e não se controla."
+      </blockquote>
+
+      <!-- PILAR DIGITAL -->
+      <h4 id="digital" style="margin-top: 48px;">
+        <span class="pilar-indicator pilar-indicator--d"></span>05 — Pilar Digital
+      </h4>
+      <div class="section-bar section-bar--digital"></div>
+
+      <p>
+        O Pilar Digital cobre segurança de software, modelos de IA,
+        agentes autônomos, privacidade por design e conformidade com
+        frameworks internacionais.
+      </p>
+
+      <h4>OWASP Agentic Top 10 (2026)</h4>
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Ameaça</th>
+            <th>Descrição</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><code>1</code></td><td><strong>Agentic Authorization</strong></td><td>Permissões excessivas para agentes autônomos</td></tr>
+          <tr><td><code>2</code></td><td><strong>Agent Identity</strong></td><td>Ausência de identidade audível para agentes</td></tr>
+          <tr><td><code>3</code></td><td><strong>Tool Poisoning</strong></td><td>Injeção de código em ferramentas externas</td></tr>
+          <tr><td><code>4</code></td><td><strong>Memory Poisoning</strong></td><td>Contaminação de memória de longo prazo</td></tr>
+          <tr><td><code>5</code></td><td><strong>Privilege Escalation</strong></td><td>Agente escala privilégios além do escopo</td></tr>
+          <tr><td><code>6</code></td><td><strong>Data Exfiltration</strong></td><td>Agente extrai dados sensíveis via ferramentas</td></tr>
+          <tr><td><code>7</code></td><td><strong>Cross-Agent Exploitation</strong></td><td>Ataque entre agentes em sistemas multi-agente</td></tr>
+          <tr><td><code>8</code></td><td><strong>Audit Trail Gaps</strong></td><td>Lacunas na trilha de auditoria</td></tr>
+          <tr><td><code>9</code></td><td><strong>Kill Switch Failure</strong></td><td>Falha no mecanismo de desativação emergencial</td></tr>
+          <tr><td><code>10</code></td><td><strong>Compliance Drift</strong></td><td>Desvio gradual de conformidade sem detecção</td></tr>
+        </tbody>
+      </table>
+
+      <h4>Privacy by Design</h4>
+      <div class="card-grid card-grid--2">
+        <div class="card card--digital">
+          <h3>Minimização</h3>
+          <p>Coletar apenas dados necessários. Pseudonimização como padrão. Retenção limitada.</p>
+        </div>
+        <div class="card card--digital">
+          <h3>Privacidade como Função</h3>
+          <p>Direito ao esquecimento implementado como função de arquitetura. Privacy by Default em todos os sistemas.</p>
+        </div>
+      </div>
+
+      <h4>Zero-Knowledge Proofs (ZKPs)</h4>
+      <p>
+        Provas de conhecimento zero permitem verificar propriedades sem revelar os dados subjacentes.
+        Aplicável a: autenticação sem exposição de credenciais, verificação de conformidade sem auditoria de dados,
+        transparência algorítmica sem revelação de modelo.
+      </p>
+    </section>
+
+    <!-- ======================== 7 CAMADAS ======================== -->
+    <section id="camadas" class="reveal">
+      <div class="section-num">06</div>
+      <h2>As 7 Camadas</h2>
+      <h3>Por Que Não é um Checklist</h3>
+      <div class="section-bar section-bar--gold"></div>
+
+      <blockquote>
+        "São subtis, inter-relacionadas e operam em estratos de autonomia técnica.
+        Não se aplica de forma isolada — opera como um sistema."
+      </blockquote>
+
+      <p>
+        Os 13 módulos de checklist do Modo 1 e Modo 2 tratam a superfície.
+        As 7 Camadas tratam a profundidade. São estratos de autonomia técnica
+        que devem ser avaliados como um sistema integrado.
+      </p>
+
+      <div class="layer-stack">
+        <div class="layer-bar layer-bar--1">
+          <span class="num">1</span>
+          <span class="label"><strong>Diretrizes e Governança</strong> — Políticas, normas internas, framework de governança</span>
+        </div>
+        <div class="layer-bar layer-bar--2">
+          <span class="num">2</span>
+          <span class="label"><strong>Design de Software</strong> — Arquitetura, padrões de segurança, threat modeling</span>
+        </div>
+        <div class="layer-bar layer-bar--3">
+          <span class="num">3</span>
+          <span class="label"><strong>Operações</strong> — Monitoramento, resposta a incidentes, continuidade</span>
+        </div>
+        <div class="layer-bar layer-bar--4">
+          <span class="num">4</span>
+          <span class="label"><strong>Agentes de IA</strong> — Autonomia, identidade, validação humana, trilha de auditoria</span>
+        </div>
+        <div class="layer-bar layer-bar--5">
+          <span class="num">5</span>
+          <span class="label"><strong>Governança de Dados</strong> — FAIR, LGPD/GDPR, ciclo de vida, qualidade</span>
+        </div>
+        <div class="layer-bar layer-bar--6">
+          <span class="num">6</span>
+          <span class="label"><strong>Avaliação e Conformidade</strong> — Auditoria, testes, certificações, monitoramento regulatório</span>
+        </div>
+        <div class="layer-bar layer-bar--7">
+          <span class="num">7</span>
+          <span class="label"><strong>Fiscalização e Transparência</strong> — Relatórios públicos, accountability, participação social</span>
+        </div>
+      </div>
+
+      <blockquote>
+        "Autonomia técnica sem soberania é dependência estrutural.
+        Não se aplica de forma isolada — opera como um sistema."
+      </blockquote>
+    </section>
+
+    <!-- ======================== AÇÃO — CHECKLISTS ======================== -->
+    <section id="checklists" class="reveal">
+      <div class="section-num">08</div>
+      <h2>Ação</h2>
+      <h3>Modo 1 · Modo 2</h3>
+      <div class="section-bar section-bar--gold"></div>
+
+      <p>
+        Este protocolo é aplicável em dois modos distintos:
+      </p>
+
+      <div class="card-grid card-grid--2">
+        <div class="card card--digital">
+          <h3>Modo 1 — Criação de Tecnologia Própria</h3>
+          <p>
+            Para organizações que <strong>constroem</strong> sistemas de IA ou plataformas digitais.
+            Aplicável desde a concepção do produto. Compliance como arquitetura.
+          </p>
+        </div>
+        <div class="card card--quantum">
+          <h3>Modo 2 — Auditoria de Tecnologias Existentes</h3>
+          <p>
+            Para organizações que <strong>usam</strong> sistemas de IA de terceiros.
+            Aplicável a contratos, integrações e plataformas já em produção.
+          </p>
+        </div>
+      </div>
+
+      <h4 style="margin-top: 32px;">Checklist — Modo 1 (Criação)</h4>
+
+      <details>
+        <summary>1. Regulação Aplicável</summary>
+        <div class="detail-body">
+          <ul>
+            <li><strong>Brasil:</strong> LGPD (Lei 13.709/2018), Marco Civil (Lei 12.965/2014), ECA Digital (Lei 15.211/2025), Decreto 12.975/2026, Decreto 12.976/2026, PL 2.338/2023 (Marco Legal da IA)</li>
+            <li><strong>Europa:</strong> AI Act, DSA, NIS2, GDPR</li>
+            <li><strong>Financeiro:</strong> PCI DSS v4.0.1, PSD2/PSD3, Basel III/IV</li>
+            <li><strong>Segurança:</strong> NIST AI RMF 1.0, ISO 31000, COBIT 2019</li>
+          </ul>
+        </div>
+      </details>
+
+      <details>
+        <summary>2. Protocolo de 7 Camadas para Agentes de IA</summary>
+        <div class="detail-body">
+          <ul>
+            <li>Camada 1: Autonomia limitada por padrão</li>
+            <li>Camada 2: Identidade registrada e audível</li>
+            <li>Camada 3: Validação humana para ações de impacto</li>
+            <li>Camada 4: Trilha de auditoria imutável</li>
+            <li>Camada 5: Granularidade de permissão por contexto</li>
+            <li>Camada 6: Kill switch operacional</li>
+            <li>Camada 7: Revisão periódica obrigatória</li>
+          </ul>
+        </div>
+      </details>
+
+      <details>
+        <summary>3. Dados Pessoais e Privacidade</summary>
+        <div class="detail-body">
+          <ul>
+            <li>Consentimento granular e informed</li>
+            <li>Minimização de dados</li>
+            <li>Retenção limitada</li>
+            <li>Direito ao esquecimento como função de arquitetura</li>
+            <li>Registro de operações de tratamento</li>
+            <li>Transferência internacional (SCCs ou adequação)</li>
+            <li>DPO nomeado e operacional</li>
+          </ul>
+        </div>
+      </details>
+
+      <details>
+        <summary>4. Segurança de Dados</summary>
+        <div class="detail-body">
+          <ul>
+            <li>AES-256 em repouso</li>
+            <li>TLS 1.3 em trânsito (sem fallback)</li>
+            <li>Chaves gerenciadas em HSM ou KMS</li>
+            <li>Backup criptografado com teste de restauração trimestral</li>
+            <li>Segregação de ambientes (dev/staging/prod)</li>
+          </ul>
+        </div>
+      </details>
+
+      <details>
+        <summary>5. Sustentabilidade</summary>
+        <div class="detail-body">
+          <ul>
+            <li>Avaliação de impacto ambiental de data centers</li>
+            <li>Eficiência energética (PUE < 1.5)</li>
+            <li>Pegada e rastro tecnológico documentados</li>
+            <li>Plano de compensação de carbono</li>
+          </ul>
+        </div>
+      </details>
+
+      <details>
+        <summary>6. Privacidade por Design</summary>
+        <div class="detail-body">
+          <ul>
+            <li>Privacy by Default em todos os sistemas</li>
+            <li>Pseudonimização como padrão</li>
+            <li>Differential Privacy em datasets compartilhados</li>
+            <li>Federated Learning quando aplicável</li>
+            <li>ZKPs para verificação sem exposição</li>
+          </ul>
+        </div>
+      </details>
+
+      <details>
+        <summary>7. Segurança de Modelos de IA</summary>
+        <div class="detail-body">
+          <ul>
+            <li>Proteção contra prompt injection e adversarial attacks</li>
+            <li>Red teaming antes de produção</li>
+            <li>AI BOM (Bill of Materials) documentado</li>
+            <li>Versionamento e rollback de modelos</li>
+            <li>Monitoramento de drift e degradação</li>
+          </ul>
+        </div>
+      </details>
+
+      <details>
+        <summary>8. Segurança Aplicada (OWASP + infra)</summary>
+        <div class="detail-body">
+          <ul>
+            <li>OWASP GenAI Top 10 endereçado</li>
+            <li>OWASP Agentic Top 10 endereçado</li>
+            <li>WAF, rate limiting, input validation</li>
+            <li>Containers hardened (CIS Benchmarks)</li>
+            <li>Secrets management (Vault ou equivalente)</li>
+          </ul>
+        </div>
+      </details>
+
+      <details>
+        <summary>9. Criptografia Pós-Quântica</summary>
+        <div class="detail-body">
+          <ul>
+            <li>Inventário criptográfico atualizado</li>
+            <li>Roadmap PQC definido</li>
+            <li>ML-KEM para encapsulamento de chaves</li>
+            <li>ML-DSA para assinaturas digitais</li>
+            <li>Crypto-agility implementada</li>
+          </ul>
+        </div>
+      </details>
+
+      <details>
+        <summary>10. Soberania e Hardware</summary>
+        <div class="detail-body">
+          <ul>
+            <li>Mapeamento de dependência de semicondutores</li>
+            <li>Verificação de proveniência de hardware</li>
+            <li>Hardware root of trust</li>
+            <li>Firmware assinado e verificado</li>
+            <li>Avaliação de riscos de supply chain</li>
+          </ul>
+        </div>
+      </details>
+
+      <details>
+        <summary>11. Infraestrutura e Identidade</summary>
+        <div class="detail-body">
+          <ul>
+            <li>Zero Trust Architecture</li>
+            <li>Identidade federada para agentes e humanos</li>
+            <li>MFA obrigatório para acessos privilegiados</li>
+            <li>Certificados rotativos</li>
+            <li>Network segmentation</li>
+          </ul>
+        </div>
+      </details>
+
+      <details>
+        <summary>12. AI BOM (Bill of Materials)</summary>
+        <div class="detail-body">
+          <ul>
+            <li>Inventário de todos os modelos de IA em produção</li>
+            <li>Dados de treinamento documentados</li>
+            <li>Proveniência e licenciamento</li>
+            <li>Dependências e integrações mapeadas</li>
+            <li>Versionamento com changelog</li>
+          </ul>
+        </div>
+      </details>
+
+      <details>
+        <summary>13. Verificação Final</summary>
+        <div class="detail-body">
+          <ul>
+            <li>Auditoria independente</li>
+            <li>Penetration testing</li>
+            <li>Revisão regulatória atualizada</li>
+            <li>Relatório de conformidade executivo</li>
+            <li>Aprovação formal do DPO e CISO</li>
+          </ul>
+        </div>
+      </details>
+
+      <h4 style="margin-top: 32px;">Checklist — Modo 2 (Auditoria)</h4>
+      <p style="font-size: 13px; color: var(--text-secondary);">
+        O Modo 2 aplica os mesmos 13 módulos, mas com foco em <strong>auditoria retroativa</strong>:
+        verificar conformidade de sistemas já em produção. Inclui cláusulas contratuais
+        de conformidade, direito de auditoria e sanções por descumprimento.
+      </p>
+    </section>
+    <!-- ======================== LEXIOGRAPH ======================== -->
+    <section id="lexiograph" class="reveal">
+      <div class="section-num">10</div>
+      <h2>Lexiograph × Protocolo</h2>
+      <h3>Norma → Implementação</h3>
+      <div class="section-bar section-bar--gold"></div>
+
+      <p>
+        O Lexiograph mapeia <strong>o que a lei exige</strong>.
+        O Protocolo Hubstry mapeia <strong>como implementar tecnicamente</strong>.
+        Juntos, formam o único sistema brasileiro que conecta ordenamento jurídico digital
+        a framework técnico de governança.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Lexiograph (a norma)</th>
+            <th>→</th>
+            <th>Protocolo Hubstry (a implementação)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>LGPD art. 46</strong><br>"medidas de segurança, técnicas e administrativas"</td>
+            <td style="text-align: center; color: var(--hubstry-gold);">→</td>
+            <td><strong>Pilar Quântico:</strong> AES-256, TLS 1.3, roadmap PQC (NIST FIPS 203/204/205)</td>
+          </tr>
+          <tr>
+            <td><strong>PL 2.338</strong><br>"responsabilidade por output de IA"</td>
+            <td style="text-align: center; color: var(--hubstry-gold);">→</td>
+            <td><strong>Protocolo de 7 Camadas:</strong> autonomia limitada, identidade, validação humana</td>
+          </tr>
+          <tr>
+            <td><strong>ECA Digital</strong><br>"proteção de menores no digital"</td>
+            <td style="text-align: center; color: var(--hubstry-gold);">→</td>
+            <td><strong>Pilar Digital:</strong> Privacy by Design, minimização, direito ao esquecimento</td>
+          </tr>
+          <tr>
+            <td><strong>Decreto 12.975/2026</strong><br>"deveres proativos de plataformas"</td>
+            <td style="text-align: center; color: var(--hubstry-gold);">→</td>
+            <td><strong>Módulo 10:</strong> Soberania, infraestrutura, hardware root of trust</td>
+          </tr>
+          <tr>
+            <td><strong>Marco Legal da IA</strong><br>"sistemas de alto risco"</td>
+            <td style="text-align: center; color: var(--hubstry-gold);">→</td>
+            <td><strong>AI BOM + Trilha de auditoria:</strong> transparência, rastreabilidade</td>
+          </tr>
+          <tr>
+            <td><strong>NR-1</strong><br>"riscos psicossociais de IA no trabalho"</td>
+            <td style="text-align: center; color: var(--hubstry-gold);">→</td>
+            <td><strong>Camada 3 (Operações):</strong> monitoramento, resposta a incidentes, continuidade</td>
+          </tr>
+          <tr>
+            <td><strong>Decreto 12.976/2026</strong><br>"violência de gênero digital"</td>
+            <td style="text-align: center; color: var(--hubstry-gold);">→</td>
+            <td><strong>Módulo 3 + 6:</strong> dados pessoais + privacidade por design</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <blockquote>
+        "A norma jurídica e a implementação técnica na mesma arquitetura.
+        Não é compliance reativo — é compliance como design."
+      </blockquote>
+    </section>
+
+    <!-- ======================== CONSIDERAÇÕES ======================== -->
+    <section id="consideracoes" class="reveal">
+      <div class="section-num">09</div>
+      <h2>Considerações Finais</h2>
+      <h3>Natureza Viva · Limitações · Avisos</h3>
+      <div class="section-bar section-bar--gold"></div>
+
+      <div class="card-grid card-grid--2">
+        <div class="card card--gold">
+          <h3>Natureza Viva</h3>
+          <p>Este documento é vivo e versionado. A versão atual é v.04.1 (janeiro 2026). Atualizações trimestrais previstas. Assinatura digital aplicada.</p>
+        </div>
+        <div class="card card--gold">
+          <h3>Limitações</h3>
+          <p>Recomendações técnicas e regulatórias — não substituem assessoria jurídica ou técnica especializada. A aplicação deve considerar o contexto de cada organização.</p>
+        </div>
+      </div>
+
+      <h4>Cobertura Normativa</h4>
+      <p>
+        Este protocolo cobre as principais normas nacionais e internacionas aplicáveis
+        à governança de IA, proteção de dados, cibersegurança e infraestrutura digital.
+        A densidade normativa exige compreensão contextualizada e aplicação por equipe especializada.
+      </p>
+
+      <h4>Referências Normativas</h4>
+      <ul>
+        <li>NIST AI RMF 1.0</li>
+        <li>OWASP GenAI Top 10 (2025)</li>
+        <li>OWASP Agentic Top 10 (2026)</li>
+        <li>Singapore MGF for Agentic AI (2025)</li>
+        <li>ISO/IEC 42001</li>
+        <li>AI Act (UE)</li>
+        <li>DSA (UE)</li>
+        <li>NIS2 (UE)</li>
+      </ul>
+    </section>
+
+    <!-- ======================== REFERÊNCIAS ======================== -->
+    <section id="referencias" class="reveal">
+      <div class="section-num">14–15</div>
+      <h2>Referências</h2>
+      <h3>Legislação · Normas · Glossário</h3>
+      <div class="section-bar section-bar--gold"></div>
+
+      <h4>Legislação Brasileira</h4>
+      <table>
+        <tbody>
+          <tr><td><strong>Lei 13.709/2018</strong></td><td>LGPD — Lei Geral de Proteção de Dados</td></tr>
+          <tr><td><strong>Lei 12.965/2014</strong></td><td>Marco Civil da Internet</td></tr>
+          <tr><td><strong>Lei 15.211/2025</strong></td><td>ECA Digital — Proteção de Crianças e Adolescentes</td></tr>
+          <tr><td><strong>Decreto 12.975/2026</strong></td><td>Regulamentação do Marco Civil — deveres de plataformas</td></tr>
+          <tr><td><strong>Decreto 12.976/2026</strong></td><td>Violência de gênero digital</td></tr>
+          <tr><td><strong>PL 2.338/2023</strong></td><td>Marco Legal da Inteligência Artificial (em tramitação)</td></tr>
+          <tr><td><strong>PL 896/2023</strong></td><td>Criminalização da misoginia (em tramitação)</td></tr>
+          <tr><td><strong>Lei 15.409/2026</strong></td><td>Cadastro Nacional de Violência por Motivo de Gênero (CNVM)</td></tr>
+        </tbody>
+      </table>
+
+      <h4>Normas Técnicas</h4>
+      <table>
+        <tbody>
+          <tr><td><strong>ISO/IEC 27001:2022</strong></td><td>Gestão de Segurança da Informação</td></tr>
+          <tr><td><strong>ISO/IEC 42001</strong></td><td>Sistema de Gestão de IA</td></tr>
+          <tr><td><strong>PCI DSS v4.0.1</strong></td><td>Segurança de Dados de Cartão de Pagamento</td></tr>
+          <tr><td><strong>NIST CSF 2.0</strong></td><td>Cybersecurity Framework</td></tr>
+          <tr><td><strong>NIST FIPS 203</strong></td><td>ML-KEM (Module-Lattice-Based Key-Encapsulation Mechanism)</td></tr>
+          <tr><td><strong>NIST FIPS 204</strong></td><td>ML-DSA (Module-Lattice-Based Digital Signature Algorithm)</td></tr>
+          <tr><td><strong>NIST FIPS 205</strong></td><td>SLH-DSA (Stateless Hash-Based Digital Signature Algorithm)</td></tr>
+          <tr><td><strong>NIST AI RMF 1.0</strong></td><td>AI Risk Management Framework</td></tr>
+          <tr><td><strong>OWASP Top 10 LLM Apps (2025)</strong></td><td>Segurança de aplicações com LLMs</td></tr>
+          <tr><td><strong>OWASP Agentic Top 10 (2026)</strong></td><td>Segurança de agentes autônomos</td></tr>
+          <tr><td><strong>Singapore MGF for Agentic AI (2025)</strong></td><td>Model Governance Framework</td></tr>
+          <tr><td><strong>AI Act (UE)</strong></td><td>Regulamentação de IA na União Europeia</td></tr>
+        </tbody>
+      </table>
+
+      <h4>Glossário</h4>
+      <table>
+        <tbody>
+          <tr><td><code>AES</code></td><td>Advanced Encryption Standard — criptografia simétrica</td></tr>
+          <tr><td><code>AI BOM</code></td><td>AI Bill of Materials — inventário de modelos e dependências</td></tr>
+          <tr><td><code>DLP</code></td><td>Data Loss Prevention — prevenção contra perda de dados</td></tr>
+          <tr><td><code>DL / ML</code></td><td>Deep Learning / Machine Learning</td></tr>
+          <tr><td><code>ECC</code></td><td>Elliptic Curve Cryptography — criptografia de curvas elípticas</td></tr>
+          <tr><td><code>EAQ</code></td><td>Estratégia de Adoção Quântica — processo de transição PQC</td></tr>
+          <tr><td><code>FDE</code></td><td>Full Disk Encryption — criptografia de disco completo</td></tr>
+          <tr><td><code>KMS</code></td><td>Key Management System — sistema de gerenciamento de chaves</td></tr>
+          <tr><td><code>ML-KEM</code></td><td>Module-Lattice-Based Key-Encapsulation Mechanism (NIST FIPS 203)</td></tr>
+          <tr><td><code>ML-DSA</code></td><td>Module-Lattice-Based Digital Signature Algorithm (NIST FIPS 204)</td></tr>
+          <tr><td><code>PET</code></td><td>Privacy-Enhancing Technologies — tecnologias de preservação de privacidade</td></tr>
+          <tr><td><code>PQC</code></td><td>Post-Quantum Cryptography — criptografia pós-quântica</td></tr>
+          <tr><td><code>QKD</code></td><td>Quantum Key Distribution — distribuição quântica de chaves</td></tr>
+          <tr><td><code>RAG</code></td><td>Retrieval-Augmented Generation — geração com recuperação</td></tr>
+          <tr><td><code>SIEM</code></td><td>Security Information and Event Management</td></tr>
+          <tr><td><code>SLH-DSA</code></td><td>Stateless Hash-Based Digital Signature Algorithm (NIST FIPS 205)</td></tr>
+          <tr><td><code>SOC</code></td><td>Security Operations Center</td></tr>
+          <tr><td><code>ZKP</code></td><td>Zero-Knowledge Proof — prova de conhecimento zero</td></tr>
+        </tbody>
+      </table>
+
+      <h4>Referências Acadêmicas e Técnicas</h4>
+      <table>
+        <tbody>
+          <tr><td>Lubin & Park (2017)</td><td>CARIS — Cryptographic Agility and Risk-based Implementation Strategies</td></tr>
+          <tr><td>BSI (2019)</td><td>Quantum-safe cryptography — fundamentals, current developments and recommendations</td></tr>
+          <tr><td>Bernstein & Lange (2017)</td><td>Post-quantum cryptography — Nature 549</td></tr>
+          <tr><td>CSRC NIST (2016)</td><td>Post-Quantum Cryptography — Round 1 Submissions</td></tr>
+          <tr><td>Schneier (2015)</td><td>Data and Goliath — W.W. Norton & Company</td></tr>
+          <tr><td>Benkler (2006)</td><td>The Wealth of Networks — Yale University Press</td></tr>
+          <tr><td>OWASP Foundation (2025)</td><td>Top 10 for LLM Applications</td></tr>
+          <tr><td>Singapore CSA (2025)</td><td>Model Governance Framework for Agentic AI</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ======================== FOOTER ======================== -->
+    <footer class="site-footer">
+      <div class="footer-brand">
+        Q · A · D
+      </div>
+      <p style="margin-bottom: 8px;">
+        <strong style="color: var(--text);">Hubstry Deep Tech</strong><br>
+        Protocolo de Tecnologia Geral — v.04.1
+      </p>
+      <p style="margin-bottom: 16px;">
+        DOI: <code>10.5281/zenodo.XXXXXXX</code> · CC BY 4.0 · Janeiro 2026<br>
+        Revisado em AI Safety Meetup Brazil #6 (ABRIA, 23/05/2026)
+      </p>
+      <p style="margin-bottom: 16px; font-size: 11px;">
+        <strong style="color: var(--text-secondary);">Propriedade Intelectual:</strong><br>
+        Lexiograph® · Hub CaaS® · GuruDev® · Instituto PCIH³<br>
+        Dupla camada: PI aberta (CC BY 4.0) + PI registrada (Marcas INPI)
+      </p>
+      <p style="margin-bottom: 16px;">
+        <a href="https://github.com/marcabru-tech/protocolo-geral-tecnologia-hubstry" target="_blank" rel="noopener">GitHub</a>
+        &nbsp;·&nbsp;
+        <a href="https://zenodo.org" target="_blank" rel="noopener">Zenodo</a>
+        &nbsp;·&nbsp;
+        <a href="https://hubstry.dev/lex-io-graph/" target="_blank" rel="noopener">Lexiograph</a>
+      </p>
+      <p style="font-size: 11px;">
+        © Hubstry Deep Tech · Rio de Janeiro · 2026
+      </p>
+    </footer>
+
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+      document.querySelectorAll('.reveal').forEach(el => {
+        observer.observe(el);
+      });
+    });
+  </script>
+
+</body>
+</html>
